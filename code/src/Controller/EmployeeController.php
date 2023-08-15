@@ -49,6 +49,21 @@ class EmployeeController extends AbstractController
         return $this->json($result);
     }
 
+    #[Route('/employees/{name}', name: 'employee_show', methods: 'get')]
+    public function get(Request $request): JsonResponse
+    {
+        $employee = $this->employeeService->findOneBy(['name' => $request->get('name')]);
+        $parentLevel = $request->get('level');
+        $childLevel = $request->get('level');
+        $result = $this->employeeService->getTreeByNameAndLevel(
+            $employee,
+            $parentLevel,
+            $childLevel
+        );
+
+        return $this->json($result);
+    }
+
     private function getExistingEmployeesByName(array $employeeNames): array
     {
         $existingEmployees = $this->employeeService->whereIn('name', $employeeNames);
