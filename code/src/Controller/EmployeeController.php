@@ -19,7 +19,7 @@ class EmployeeController extends AbstractController
     }
 
     #[Route('/employees', name: 'employee_import', methods: 'post')]
-    public function index(Request $request): JsonResponse
+    public function import(Request $request): JsonResponse
     {
         $data = $request->toArray();
         $employeeNames = array_unique(array_merge(array_keys($data), array_values($data)));
@@ -33,6 +33,20 @@ class EmployeeController extends AbstractController
         return $this->json([
             'message' => 'Created successfully',
         ]);
+    }
+
+    #[Route('/employees', name: 'employee_index', methods: 'get')]
+    public function index(): JsonResponse
+    {
+        $employees = $this->employeeService->findAll();
+        $groupByParentId = [];
+        array_walk($employees, function ($employee) use (&$groupByParentId) {
+            return $groupByParentId[$employee->getParentId() ?? 0][] = $employee;
+        });
+
+        $result = $this->employeeService->mapEmployeeTree($groupByParentId);
+
+        return $this->json($result);
     }
 
     private function getExistingEmployeesByName(array $employeeNames): array

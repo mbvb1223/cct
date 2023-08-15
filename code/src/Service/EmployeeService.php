@@ -5,13 +5,28 @@ namespace App\Service;
 use App\Entity\Employee;
 use App\Repository\EmployeeRepository;
 
-class EmployeeService {
+class EmployeeService
+{
     private EmployeeRepository $employeeRepository;
 
     public function __construct(
         EmployeeRepository $productRepository
     ) {
         $this->employeeRepository = $productRepository;
+    }
+
+    public function mapEmployeeTree(array $groupByParentId, int $parentId = 0): array
+    {
+        $data = [];
+        if (!isset($groupByParentId[$parentId])) {
+            return [];
+        }
+
+        foreach ($groupByParentId[$parentId] as $employee) {
+            $data[$employee->getName()] = $this->mapEmployeeTree($groupByParentId, $employee->getId());
+        }
+
+        return $data;
     }
 
     public function save(Employee $employee): Employee
