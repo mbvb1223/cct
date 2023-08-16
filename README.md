@@ -65,7 +65,7 @@ But in Service layer, **`getTreeByNameAndLevel(Employee $employee, int $parentLe
 
 # Addition
 - The main logic is existing at **EmployeeController** and **EmployeeService** ==> [Code is here](https://github.com/mbvb1223/cct/pull/2/files)
-- I used CircleCI for continuous integration => [Code is here](https://github.com/mbvb1223/cct/pull/4)
+- I used [CircleCI](https://app.circleci.com/pipelines/github/mbvb1223/cct) for continuous integration => [Code is here](https://github.com/mbvb1223/cct/pull/4)
 ![image](https://github.com/mbvb1223/cct/assets/11681514/d01d6c1f-b946-4038-be25-631f02b7cff9)
 - I wrote some unit tests, integration tests and functional tests ==> [Code is here](https://github.com/mbvb1223/cct/pull/3)
 ![image](https://github.com/mbvb1223/cct/assets/11681514/3f6f55aa-0144-4f30-8494-983caa9314ae)
