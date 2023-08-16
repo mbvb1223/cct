@@ -18,8 +18,8 @@
 
 # My solution
 - Assume that one employee has only one supervisor. One supervisor can have multiple employees
-- Assume that Name is unique, we do not two employees with the same Name (actually, we should call it is EmployeeID instead of Name)
-- I want to focus on the main logic, so I did not implement some validations/performance issue/try-catch some special cases...
+- Assume that Name is unique, we do not have two employees with the same Name (actually, we should call it is EmployeeID instead of Name)
+- I want to focus on the main logic, so I did not implement some validations/performance issues/try-catch some special cases...
 - Create a table (employee: id, name, parent_id)
 
 ### Point 1
@@ -46,7 +46,7 @@
 - Get an Employee by the Name condition
 - Write a recursive function to get supervisors with the Level condition
 - Write a recursive function to get Child employees with the Level condition
-- After have all of wanted employee => Do the same point 2 above => Group them key by **parent_id** => Call **mapEmployeeTree()** => return value
+- After having all of the wanted employees => Do the same point 2 above => Group them key by **parent_id** => Call **mapEmployeeTree()** => return value
 ![image](https://github.com/mbvb1223/cct/assets/11681514/1703d24c-b8c3-4c79-b96b-a37aa559f807)
 - **NOTE**: "I want search by the name of the employee and the number of hierarchical levels to be returned" 
 => Actually, I am not clear about "hierarchical levels". Is it Parent hierarchical levels or child hierarchical levels or both?
@@ -64,7 +64,7 @@ But in Service layer, **`getTreeByNameAndLevel(Employee $employee, int $parentLe
 [https://khien.onthitoeic.net/employees/Employee 4?level=2](https://khien.onthitoeic.net/employees/Employee%204?level=2)
 
 # Addition
-- Main logic is existing at **EmployeeController** and **EmployeeService** ==> [Code is here](https://github.com/mbvb1223/cct/pull/2/files)
+- The main logic is existing at **EmployeeController** and **EmployeeService** ==> [Code is here](https://github.com/mbvb1223/cct/pull/2/files)
 - I used CircleCI for continuous integration => [Code is here](https://github.com/mbvb1223/cct/pull/4)
 ![image](https://github.com/mbvb1223/cct/assets/11681514/d01d6c1f-b946-4038-be25-631f02b7cff9)
 - I wrote some unit tests, integration tests and functional tests ==> [Code is here](https://github.com/mbvb1223/cct/pull/3)
