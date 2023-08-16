@@ -53,6 +53,7 @@
 So in Controller, level = 2 then it will get 2 supervisors and 2 child employees 
 But in Service layer, **`getTreeByNameAndLevel(Employee $employee, int $parentLevel = null, int $childLevel = null): array`** will support definition Parent and Child level ==> [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Service/EmployeeService.php#L32).
 ![image](https://github.com/mbvb1223/cct/assets/11681514/e3ca7a73-b399-443f-b056-0c9dcc50de12)
+![image](https://github.com/mbvb1223/cct/assets/11681514/186be562-024e-4d6c-861b-2cb1de9eb450)
 
 
 ### Point 4
