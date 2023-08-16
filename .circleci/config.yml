@@ -80,7 +80,7 @@ jobs:
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
 
       - store_artifacts:
-          path: ~/symfony/coverage
+          path: ~/symfony/code/coverage
           destination: functional
 
   integration_test:
@@ -113,7 +113,7 @@ jobs:
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
 
       - store_artifacts:
-          path: ~/symfony/coverage
+          path: ~/symfony/code/coverage
           destination: integration
 
   deploy:
