@@ -26,7 +26,6 @@ class EmployeeController extends AbstractController
         $existingEmployees = $this->getExistingEmployeesByName($employeeNames);
         foreach ($data as $employeeName => $supervisorName) {
             $supervisor = $this->createSupervisor($existingEmployees, $supervisorName);
-
             $this->createEmployee($existingEmployees, $employeeName, $supervisor->getId());
         }
 
@@ -39,10 +38,7 @@ class EmployeeController extends AbstractController
     public function index(): JsonResponse
     {
         $employees = $this->employeeService->findAll();
-        $groupByParentId = [];
-        array_walk($employees, function ($employee) use (&$groupByParentId) {
-            return $groupByParentId[$employee->getParentId() ?? 0][] = $employee;
-        });
+        $groupByParentId = $this->employeeService->groupByParentId($employees);
 
         $result = $this->employeeService->mapEmployeeTree($groupByParentId);
 

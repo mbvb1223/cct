@@ -32,30 +32,37 @@ class EmployeeService
     public function getTreeByNameAndLevel(Employee $employee, int $parentLevel = null, int $childLevel = null): array
     {
         $employees[] = $employee;
-        $this->getParentLevel($employees, $employee, $parentLevel);
-        $this->getChildLevel($employees, [$employee], $childLevel);
+        $parentId = $this->assignParentLevel($employees, $employee, $parentLevel);
+        $this->assignChildLevel($employees, [$employee], $childLevel);
 
+        $groupByParentId = $this->groupByParentId($employees);
+
+        return $this->mapEmployeeTree($groupByParentId, $parentId);
+    }
+
+    public function groupByParentId(array $employees): array
+    {
         $groupByParentId = [];
         array_walk($employees, function ($employee) use (&$groupByParentId) {
             return $groupByParentId[$employee->getParentId() ?? 0][] = $employee;
         });
 
-        return $this->mapEmployeeTree($groupByParentId);
+        return $groupByParentId;
     }
 
-    private function getParentLevel(&$result, Employee $employee, int $level = null)
+    private function assignParentLevel(&$result, Employee $employee, int $level = null): ?int
     {
         if (!$employee->getParentId() || $level === 0) {
-            return;
+            return $employee->getParentId() ?? 0;
         }
         $parentEmployee = $this->findOneBy(['id' => $employee->getParentId()]);
         $result[] = $parentEmployee;
 
         $level = $level ? $level - 1 : null;
-        $this->getParentLevel($result, $parentEmployee, $level);
+        return $this->assignParentLevel($result, $parentEmployee, $level);
     }
 
-    private function getChildLevel(&$result, array $employees, int $level = null)
+    private function assignChildLevel(&$result, array $employees, int $level = null): void
     {
         $ids = [];
         array_walk($employees, function($employee) use (&$ids) {
@@ -64,12 +71,12 @@ class EmployeeService
         $childEmployees = $this->whereIn('parent_id', $ids);
 
         if (!$childEmployees || $level === 0) {
-            return [];
+            return;
         }
         $result = array_merge($result, $childEmployees);
 
         $level = $level ? $level - 1 : null;
-        $this->getChildLevel($result, $childEmployees, $level);
+        $this->assignChildLevel($result, $childEmployees, $level);
     }
 
     public function save(Employee $employee): Employee
@@ -90,11 +97,6 @@ class EmployeeService
     public function findOneBy(array $criteria, array $orderBy = null): ?Employee
     {
         return $this->employeeRepository->findOneBy($criteria, $orderBy);
-    }
-
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
-    {
-        return $this->employeeRepository->findBy($criteria, $orderBy, $limit, $offset);
     }
 
     public function whereIn(string $field, array $values)
