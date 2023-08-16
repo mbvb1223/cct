@@ -45,6 +45,11 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Install PHP exts
+          command: |
+            sudo pecl install xdebug \
+            && docker-php-ext-enable xdebug
+      - run:
           name: Run Unit tests
           command: |
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit --coverage-html coverage --testdox --debug
