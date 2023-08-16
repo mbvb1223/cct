@@ -4,30 +4,24 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.2-browsers
-
     working_directory: ~/symfony
-
     steps:
       - checkout
       - run:
           name: Init env
           command: |
             cd code && cp .env.test .env
-
       # Download and cache dependencies PHP
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "code/composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
       - run: cd code && composer install -n --prefer-dist
-
       - save_cache:
           paths:
             - ./code/vendor
           key: v1-dependencies-{{ checksum "code/composer.json" }}
-
       # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job.
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
@@ -62,7 +56,6 @@ jobs:
     docker:
       - image: cimg/php:8.2
       - image: cimg/mysql:8.0.28
-#        command: [ --default-authentication-plugin=mysql_native_password ]
         environment:
           MYSQL_USER: khien
           MYSQL_PASSWORD: 'a'
@@ -77,12 +70,10 @@ jobs:
             && docker-php-ext-enable xdebug
             curl -sS https://get.symfony.com/cli/installer | bash
             /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
-
       - run:
           name: Run Integration Tests
           command: |
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Integration --coverage-html coverage --testdox --debug
-
       - store_artifacts:
           path: ~/symfony/code/coverage
           destination: integration
@@ -92,7 +83,6 @@ jobs:
     docker:
       - image: cimg/php:8.2
       - image: cimg/mysql:8.0.28
-#        command: [ --default-authentication-plugin=mysql_native_password ]
         environment:
           MYSQL_USER: khien
           MYSQL_PASSWORD: 'a'
@@ -107,12 +97,10 @@ jobs:
             && docker-php-ext-enable xdebug
             curl -sS https://get.symfony.com/cli/installer | bash
             /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
-
       - run:
           name: Run Functional Tests
           command: |
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
-
       - store_artifacts:
           path: ~/symfony/code/coverage
           destination: functional
