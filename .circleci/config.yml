@@ -68,7 +68,6 @@ jobs:
           MYSQL_PASSWORD: 'a'
           MYSQL_DATABASE: symfony_test
     steps:
-      # Start with the initial build
       - attach_workspace:
           at: ~/
       - run:
@@ -78,8 +77,6 @@ jobs:
             && docker-php-ext-enable xdebug
             curl -sS https://get.symfony.com/cli/installer | bash
             /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
-            php -v
-            php -m
 
       - run:
           name: Run Integration Tests
@@ -101,7 +98,6 @@ jobs:
           MYSQL_PASSWORD: 'a'
           MYSQL_DATABASE: symfony_test
     steps:
-      # Start with the initial build
       - attach_workspace:
           at: ~/
       - run:
@@ -109,10 +105,8 @@ jobs:
           command: |
             sudo pecl install xdebug \
             && docker-php-ext-enable xdebug
-#            curl -sS https://get.symfony.com/cli/installer | bash
-#            /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
-#            php -v
-#            php -m
+            curl -sS https://get.symfony.com/cli/installer | bash
+            /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
 
       - run:
           name: Run Functional Tests
