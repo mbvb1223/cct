@@ -1,0 +1,111 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/php:8.2-browsers
+
+    working_directory: ~/symfony
+
+    steps:
+      - checkout
+      - run:
+          name: Install PHP exts
+          command: |
+            cp .env.test .env
+
+      # Download and cache dependencies PHP
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job.
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: ~/
+          # Must be relative path from root
+          paths:
+            - symfony
+
+  feature_test:
+    working_directory: ~/symfony
+    docker:
+      - image: cimg/php:8.2
+      - image: cimg/mysql:8.0.28
+        command: [ --default-authentication-plugin=mysql_native_password ]
+        environment:
+          MYSQL_USER: khien
+          MYSQL_PASSWORD: 'a'
+          MYSQL_DATABASE: symfony_test
+    steps:
+      # Start with the initial build
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install PHP exts
+          command: |
+            sudo pecl install xdebug \
+            && docker-php-ext-enable xdebug
+            curl -sS https://get.symfony.com/cli/installer | bash
+            /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
+            php -v
+            php -m
+
+      - run:
+          name: Run Feature Tests
+          command: |
+            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
+
+      - store_artifacts:
+          path: ~/symfony/coverage
+          destination: artifact-file
+
+  unit_test:
+    working_directory: ~/symfony
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - run:
+          name: Run Unit tests
+          command: |
+            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit
+
+  deploy:
+    docker:
+      - image: cimg/base:2023.01
+    steps:
+      - run:
+          name: Deploy to Server
+          command: |
+            echo Will implement later
+
+workflows:
+  build_deploy:
+    jobs:
+      - build
+      - feature_test:
+          requires:
+            - build
+      - unit_test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - feature_test
+            - unit_test
+          filters:
+            branches:
+              only: dev
