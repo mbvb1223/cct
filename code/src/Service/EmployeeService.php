@@ -65,7 +65,7 @@ class EmployeeService
     private function assignChildLevel(&$result, array $employees, int $level = null): void
     {
         $ids = [];
-        array_walk($employees, function($employee) use (&$ids) {
+        array_walk($employees, function ($employee) use (&$ids) {
             $ids[] = $employee->getId();
         });
         $childEmployees = $this->whereIn('parent_id', $ids);
