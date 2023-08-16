@@ -129,10 +129,13 @@ workflows:
   build_deploy:
     jobs:
       - build
-      - feature_test:
+      - unit_test:
           requires:
             - build
-      - unit_test:
+      - integration_test:
+          requires:
+            - build
+      - functional_test:
           requires:
             - build
       - deploy:
