@@ -6,7 +6,7 @@ require 'recipe/symfony.php';
 // Config
 set('application', 'symfony');
 set('repository', 'git@github.com:mbvb1223/cct.git');
-
+set('sub_directory', 'code');
 add('shared_files', []);
 add('shared_dirs', []);
 add('writable_dirs', []);
