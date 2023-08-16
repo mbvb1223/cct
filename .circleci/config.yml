@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install PHP exts
+          name: Init env
           command: |
             cd code && cp .env.test .env
 
