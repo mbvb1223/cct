@@ -104,13 +104,13 @@ jobs:
             && docker-php-ext-enable xdebug
             curl -sS https://get.symfony.com/cli/installer | bash
             /home/circleci/.symfony5/bin/symfony console doctrine:migrations:migrate -n --env=test
-            php -vs
+            php -v
             php -m
 
       - run:
           name: Run Integration Tests
           command: |
-            XDEBUG_MODE=coverage .vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
+            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
 
       - store_artifacts:
           path: ~/symfony/coverage
@@ -137,8 +137,9 @@ workflows:
             - build
       - deploy:
           requires:
-            - feature_test
             - unit_test
+            - integration_test
+            - functional_test
           filters:
             branches:
               only: dev
