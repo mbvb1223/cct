@@ -37,6 +37,19 @@ jobs:
           paths:
             - symfony
 
+  unit_test:
+    working_directory: ~/symfony/code
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - run:
+          name: Run Unit tests
+          command: |
+            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit
+
   feature_test:
     working_directory: ~/symfony/code
     docker:
@@ -62,26 +75,13 @@ jobs:
             php -m
 
       - run:
-          name: Run Feature Tests
+          name: Run Functional Tests
           command: |
             XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
 
       - store_artifacts:
           path: ~/symfony/coverage
-          destination: artifact-file
-
-  unit_test:
-    working_directory: ~/symfony/code
-    docker:
-      - image: cimg/php:8.2
-    steps:
-      - attach_workspace:
-          at: ~/
-
-      - run:
-          name: Run Unit tests
-          command: |
-            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit
+          destination: functional
 
   deploy:
     docker:
