@@ -44,11 +44,13 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-
       - run:
           name: Run Unit tests
           command: |
-            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit
+            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Unit --coverage-html coverage --testdox --debug
+      - store_artifacts:
+          path: ~/symfony/code/coverage
+          destination: unit
 
   functional_test:
     working_directory: ~/symfony/code
