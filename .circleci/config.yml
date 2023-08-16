@@ -62,7 +62,7 @@ jobs:
     docker:
       - image: cimg/php:8.2
       - image: cimg/mysql:8.0.28
-        command: [ --default-authentication-plugin=mysql_native_password ]
+#        command: [ --default-authentication-plugin=mysql_native_password ]
         environment:
           MYSQL_USER: khien
           MYSQL_PASSWORD: 'a'
@@ -92,7 +92,7 @@ jobs:
     docker:
       - image: cimg/php:8.2
       - image: cimg/mysql:8.0.28
-        command: [ --default-authentication-plugin=mysql_native_password ]
+#        command: [ --default-authentication-plugin=mysql_native_password ]
         environment:
           MYSQL_USER: khien
           MYSQL_PASSWORD: 'a'
