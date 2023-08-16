@@ -38,7 +38,7 @@ jobs:
             - symfony
 
   feature_test:
-    working_directory: ~/symfony
+    working_directory: ~/symfony/code
     docker:
       - image: cimg/php:8.2
       - image: cimg/mysql:8.0.28
@@ -71,7 +71,7 @@ jobs:
           destination: artifact-file
 
   unit_test:
-    working_directory: ~/symfony
+    working_directory: ~/symfony/code
     docker:
       - image: cimg/php:8.2
     steps:
