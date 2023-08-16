@@ -36,7 +36,7 @@
 - Load all Employees to an array (_we will ignore a performance issue here_)
 - **groupByParentId()** will group them key by **parent_id**
 ![image](https://github.com/mbvb1223/cct/assets/11681514/3e73da04-97a9-4600-836d-e295e9a8cf39)
-- Write a recursive function (**mapEmployeeTree()**) to convert the group above into expected JSON ==> [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Service/EmployeeService.php#L18).
+- Write a recursive function (**mapEmployeeTree()**) to convert the group above into expected JSON ==> [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Service/EmployeeService.php#L18). <br />
 ![image](https://github.com/mbvb1223/cct/assets/11681514/f54e0130-8581-41da-a12d-039774c256ce)
 ![image](https://github.com/mbvb1223/cct/assets/11681514/32c0a1f0-cb54-4677-9551-38254d7af073)
 
