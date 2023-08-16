@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  app:
+    image: nginx:1.16.1
+    container_name: cct_nginx
+    restart: always
+    ports:
+      - "1111:80"
+    volumes:
+      - ./conf/app/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./code:/var/www/html
+      - ./nginx_log:/var/log/nginx
+
+  phpfpm:
+    build: './dockerfile/phpfpm'
+    restart: always
+    container_name: cct_php
+    volumes:
+      - ./code:/var/www/html
+  mysql:
+    image: mysql:8.0.28
+    container_name: cct_mysql
+    restart: always
+    ports:
+      - 1112:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: khien
+      MYSQL_PASSWORD: 'a'
+      MYSQL_ROOT_PASSWORD: 'a'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: cct_phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: cct_mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 1113:80
