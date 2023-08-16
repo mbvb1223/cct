@@ -110,7 +110,7 @@ jobs:
       - run:
           name: Run Integration Tests
           command: |
-            XDEBUG_MODE=coverage ./vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
+            XDEBUG_MODE=coverage .vendor/bin/phpunit tests/Functional --coverage-html coverage --testdox --debug
 
       - store_artifacts:
           path: ~/symfony/coverage
