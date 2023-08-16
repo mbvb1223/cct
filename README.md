@@ -23,8 +23,8 @@
 - Create a table (employee: id, name, parent_id)
 
 ### Point 1
-- Read the POST JSON (POST: domain/employees)
-- Get all existing employees by Names
+- Get data from the POST JSON (POST: domain/employees)
+- Get all existing employees by given Names
 - Create Supervisor first
 - Get ID of the Supervisor => Create employee with **parent_id** is Supervisor's id
 - [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Controller/EmployeeController.php#L22)
@@ -36,7 +36,7 @@
 - Load all Employees to an array (_we will ignore a performance issue here_)
 - **groupByParentId()** will group them key by **parent_id**
 ![image](https://github.com/mbvb1223/cct/assets/11681514/3e73da04-97a9-4600-836d-e295e9a8cf39)
-- Write a recursive function (**mapEmployeeTree()**) to convert the group above into expected JSON => [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Service/EmployeeService.php#L18).
+- Write a recursive function (**mapEmployeeTree()**) to convert the group above into expected JSON ==> [Code is here](https://github.com/mbvb1223/cct/blob/dev/code/src/Service/EmployeeService.php#L18).
 ![image](https://github.com/mbvb1223/cct/assets/11681514/f54e0130-8581-41da-a12d-039774c256ce)
 ![image](https://github.com/mbvb1223/cct/assets/11681514/32c0a1f0-cb54-4677-9551-38254d7af073)
 
@@ -56,12 +56,12 @@ But in Service layer, **`getTreeByNameAndLevel(Employee $employee, int $parentLe
 
 
 ### Point 4
-- I am not familiar with docker deploying => So I created docker compose files for local setup => [Code is here](https://github.com/mbvb1223/cct/pull/5).
+- I am not familiar with docker deploying => So please allow me to create docker compose files for local setup => [Code is here](https://github.com/mbvb1223/cct/pull/5).
 - For PROD deploying, I used [https://deployer.org/](https://deployer.org/) tool ==> [Code is here](https://github.com/mbvb1223/cct/pull/6)
 - I deployed this project to EC2 -> We can test here: 
-[https://khien.onthitoeic.net/employees](https://khien.onthitoeic.net/employees)
-[https://khien.onthitoeic.net/employees/Employee 4?level=1](https://khien.onthitoeic.net/employees/Employee%204?level=1)
-[https://khien.onthitoeic.net/employees/Employee 4?level=2](https://khien.onthitoeic.net/employees/Employee%204?level=2)
+[https://khien.onthitoeic.net/employees](https://khien.onthitoeic.net/employees) <br />
+[https://khien.onthitoeic.net/employees/Employee 4?level=1](https://khien.onthitoeic.net/employees/Employee%204?level=1) <br />
+[https://khien.onthitoeic.net/employees/Employee 4?level=2](https://khien.onthitoeic.net/employees/Employee%204?level=2) <br />
 
 # Addition
 - The main logic is existing at **EmployeeController** and **EmployeeService** ==> [Code is here](https://github.com/mbvb1223/cct/pull/2/files)
