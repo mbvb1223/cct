@@ -20,5 +20,4 @@ host('52.221.129.246')
     ->set('deploy_path', '~/{{application}}');
 
 // Hooks
-
 after('deploy:failed', 'deploy:unlock');
