@@ -12,7 +12,6 @@ add('shared_dirs', []);
 add('writable_dirs', []);
 
 // Hosts
-
 host('52.221.129.246')
     ->set('remote_user', 'ubuntu')
     ->set('branch', 'CCT-6_Deployer')
